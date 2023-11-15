@@ -1,0 +1,260 @@
+import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:thakafah_reports/shared_widget/app_theme.dart';
+import 'package:thakafah_reports/shared_widget/snackbar.dart';
+import '../constant/images.dart';
+import '../core/model/profile_model.dart';
+import '../core/services/api_service.dart';
+import '../core/services/timesheet_prefrence.dart';
+import '../locator.dart';
+import '../main.dart';
+import '../shared_widget/notification_handler.dart';
+import 'login_page.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  @override
+  void initState() {
+    SnackbarShare.init(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
+    return FutureBuilder<ProfileDetails>(
+      future: getUserInfo(),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<ProfileDetails> snapshot,
+      ) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.white,
+              child: LoadingAnimationWidget.fourRotatingDots(
+                color: theme.primaryColor,
+                size: 30,
+              ));
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            return mainWidget(snapshot.data!, theme);
+          } else {
+            return mainWidget(ProfileDetails(name: "", gender: ""), theme);
+          }
+        } else {
+          return Text('Error');
+        }
+      },
+    );
+  }
+
+  Widget mainWidget(ProfileDetails profileOnj, ThemeData theme) {
+    return Column(
+      children: [
+        Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height * 0.33,
+                  top: 20,
+                  right: 15,
+                  left: 15),
+              decoration: BoxDecoration(
+                color: theme.primaryColorLight,
+                borderRadius: BorderRadius.circular(15),
+                image: const DecorationImage(
+                  image: AssetImage(Images.login_background),
+                  fit: BoxFit.cover,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.primaryColorLight,
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(0, 1), // changes position of shadow
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              margin: const EdgeInsets.only(right: 25, left: 25, bottom: 30),
+              decoration: BoxDecoration(
+                color: AppTheme.category3.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[100]!,
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: const Offset(1, 1), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 130),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          SnackbarShare.showMessage(
+                              "هذه الخدمة غير متاحة حاليا");
+                        },
+                        child: itemProfile(Icons.edit, "تعديل الملف", theme)),
+                    const Divider(),
+                    GestureDetector(
+                        onTap: () {
+                          showNotificationDialog(context);
+                        },
+                        child: itemProfile(
+                            Icons.notification_add, "الإشعارات", theme)),
+                    const Divider(),
+                    GestureDetector(
+                        onTap: () {
+                          TimeSheetPreference.logout();
+                          // model.destroySession();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const LoginPage()),
+                            (route) => false,
+                          );
+                        },
+                        child:
+                            itemProfile(Icons.logout, "تسجيل الخروج", theme)),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height * 0.28),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 60, // Image radius
+                    backgroundImage: AssetImage(profileOnj.gender != null &&
+                            profileOnj.gender! == "male"
+                        ? Images.profileImageM
+                        : Images.profileImageF),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      profileOnj.name != null ? profileOnj.name! : "User",
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget itemProfile(IconData icon, String title, ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 30, left: 30, top: 10, bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
+            icon,
+            size: 17,
+            color: theme.primaryColorLight,
+          ),
+          Text(
+            title,
+            style: theme.textTheme.titleMedium,
+          ),
+          const Icon(
+            Icons.arrow_right_sharp,
+            size: 17,
+            color: Colors.black38,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<ProfileDetails> getUserInfo() async {
+    var profile = ProfileDetails();
+    try {
+      final ApiService _api = locator<ApiService>();
+      var obj = await _api.getUserProfile();
+      if (obj.result != null && obj.result!.success! == true) {
+        profile = obj.result!.profile!;
+      } else {
+        print("444");
+        profile = ProfileDetails();
+      }
+    } catch (e) {
+      profile = ProfileDetails();
+    }
+    return profile;
+  }
+
+  showNotificationDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text(
+        "نعم",
+      ),
+      onPressed: () {
+
+
+        NotificationService.notificationService.scheduleFromNotification().then((value) {
+          SnackbarShare.showMessage("تم تعيين الاشعارات");
+          Navigator.pop(context);
+        });
+      },
+    );
+    Widget noButton = TextButton(
+      child: Text("لا"),
+      onPressed: () async {
+        NotificationService.notificationService.cancelAllNotifications();
+        SnackbarShare.showMessage("تم حذف جميع الاشعارات");
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "الإشعارات",
+        textDirection: TextDirection.rtl,
+      ),
+      content: Text(
+        "هل تود تفعيل الإشعارات",
+        textDirection: TextDirection.rtl,
+      ),
+      actions: [
+        noButton,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}
