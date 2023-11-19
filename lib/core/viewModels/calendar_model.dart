@@ -95,7 +95,6 @@ class CalendarModel extends BaseModel {
   }
 
   removeTask(int index){
-    print("DISSSMMIIIS");
     print(index);
     tasks.removeAt(index);
     notifyListeners();

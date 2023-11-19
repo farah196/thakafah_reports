@@ -3,7 +3,6 @@ import '../../locator.dart';
 import '../base_model.dart';
 import '../services/api_service.dart';
 import '../services/timesheet_prefrence.dart';
-import '../viewstate.dart';
 
 class LoginModel extends BaseModel {
   final ApiService _api = locator<ApiService>();
@@ -15,26 +14,21 @@ class LoginModel extends BaseModel {
 
   var auth;
 
-
   setAuth(String sessionID) {
     auth = sessionID;
     notifyListeners();
   }
 
   Future<bool> login(
-      String email,
-      String password,
-      BuildContext context,
-      ) async {
-
-
-
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     var loginResponse = await _api.login(email, password);
 
     var success = loginResponse.result != null;
 
     if (loginResponse.result != null) {
-
       auth = ApiService.auth;
       TimeSheetPreference.setUserID(loginResponse.result!.uid!);
       TimeSheetPreference.setShowDuration(true);
@@ -42,7 +36,7 @@ class LoginModel extends BaseModel {
 
       ApiService.userID = loginResponse.result!.uid!.toString();
     }
-notifyListeners();
+    notifyListeners();
     return success;
   }
 }

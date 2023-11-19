@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -11,6 +10,7 @@ import 'package:thakafah_reports/pages/add_task_page.dart';
 import 'package:thakafah_reports/shared_widget/app_theme.dart';
 import 'package:thakafah_reports/shared_widget/snackbar.dart';
 
+import '../constant/app_strings.dart';
 import '../core/services/timesheet_prefrence.dart';
 import '../core/viewstate.dart';
 import 'base_view.dart';
@@ -26,8 +26,6 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   var _calendarFormat = CalendarFormat.month;
   final tooltipController = JustTheController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +135,7 @@ class _CalendarPageState extends State<CalendarPage> {
               child: Align(
                   alignment: Alignment.topRight,
                   child: Text(
-                    "مهام اليوم",
+                    Strings.todayTask,
                     style: theme.textTheme.displayLarge,
                   )),
             ),
@@ -152,7 +150,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
                 return Column(
                   children: [
-
                     index == 0
                         ? JustTheTooltip(
                             controller: tooltipController,
@@ -160,20 +157,18 @@ class _CalendarPageState extends State<CalendarPage> {
                               TimeSheetPreference.setShowTaskItem(false);
                             },
                             content: Container(
-                              padding: EdgeInsets.only(top: 15,left: 10,right: 10),
-                              height: MediaQuery.of(context).size.height*0.09,
-                              width: MediaQuery.of(context).size.width*0.6,
-
+                              padding:
+                                  EdgeInsets.only(top: 15, left: 10, right: 10),
+                              height: MediaQuery.of(context).size.height * 0.09,
+                              width: MediaQuery.of(context).size.width * 0.6,
                               child: Text(
-                                'اذا أردت تعديل المهام قم بتمريره الى اليمين واذا أردت حذفه قم بتمريره الى اليسار ',
+                                Strings.taskTooltip,
                                 textAlign: TextAlign.center,
                                 textDirection: TextDirection.rtl,
                               ),
                             ),
                             child: returnTask(theme, model, index, itemColor))
                         : returnTask(theme, model, index, itemColor),
-
-
                     index != model.tasks.length - 1
                         ? const Padding(
                             padding: EdgeInsets.only(left: 30, right: 30),
@@ -203,7 +198,7 @@ class _CalendarPageState extends State<CalendarPage> {
           Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 20),
             child: Text(
-              "لا يوجد اي مهام مضاف",
+              Strings.noTaskAdded,
               style: theme.textTheme.displayMedium,
             ),
           ),
@@ -253,7 +248,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "المدة",
+                    Strings.durationKey,
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
@@ -268,31 +263,15 @@ class _CalendarPageState extends State<CalendarPage> {
               key: Key('anyString'),
               startActionPane: ActionPane(
                 motion: const ScrollMotion(),
-
-                // dismissible: DismissiblePane(
-                //
-                //     key: Key('anyString'),
-                //     onDismissed: () async {
-                //       var success = await model.deleteTask(
-                //           model.tasks[index].taskId!, index);
-                //       if (success) {
-                //         SnackbarShare.showMessage("تم حذفها بنجاح");
-                //       } else {
-                //         SnackbarShare.showMessage(
-                //             "حدث خطأ ، يرجى المحاولة مرة أخرى");
-                //       }
-                //     },
-                //     ),
                 children: [
                   SlidableAction(
                     onPressed: (BuildContext context) async {
                       var success = await model.deleteTask(
                           model.tasks[index].taskId!, index);
                       if (success) {
-                        SnackbarShare.showMessage("تم حذفها بنجاح");
+                        SnackbarShare.showMessage(Strings.doneDeleted);
                       } else {
-                        SnackbarShare.showMessage(
-                            "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                        SnackbarShare.showMessage(Strings.systemError);
                       }
                     },
                     backgroundColor: Colors.redAccent,
@@ -306,7 +285,6 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
-
                 children: [
                   SlidableAction(
                     padding: const EdgeInsets.all(0),
@@ -329,44 +307,13 @@ class _CalendarPageState extends State<CalendarPage> {
                     borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
-                    label: 'تعديل',
+                    label: Strings.edit,
                   ),
                 ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // GestureDetector(
-                  //     onTap: () {
-                  //       // Navigator.push(
-                  //       //   context,
-                  //       //   MaterialPageRoute(
-                  //       //       builder: (BuildContext context) => EventDetails(
-                  //       //         model: events[index],
-                  //       //       )),
-                  //       // );
-                  //     },
-                  //     child: Container(
-                  //         padding: const EdgeInsets.all(3),
-                  //         margin: const EdgeInsets.only(left: 15),
-                  //         decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(5),
-                  //             border: Border.all(
-                  //               color: theme.hintColor,
-                  //             )),
-                  //         child: Row(
-                  //           children: [
-                  //             Icon(
-                  //               Icons.arrow_back_ios,
-                  //               color: theme.hintColor,
-                  //               size: 16,
-                  //             ),
-                  //             Text(
-                  //               "المزيد",
-                  //               style: theme.textTheme.bodyMedium,
-                  //             ),
-                  //           ],
-                  //         ))),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, right: 10),
                     child: Align(
@@ -392,23 +339,13 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Align(
                         alignment: Alignment.topRight,
                         child: Text(
-                          model.tasks[index].desc!,
+                          model.tasks[index].desc!.length > 50
+                              ? '${model.tasks[index].desc!.substring(0, 50)}...'
+                              : model.tasks[index].desc!,
                           style: theme.textTheme.bodyMedium,
                           textDirection: TextDirection.rtl,
                         )),
                   ),
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     Align(
-                  //         alignment: Alignment.topRight,
-                  //         child: Text(
-                  //           events[index].toString(),
-                  //           style: theme.textTheme.displayMedium,
-                  //         )),
-                  //
-                  //   ],
-                  // ),
                 ],
               ),
             ),
@@ -426,6 +363,4 @@ class _CalendarPageState extends State<CalendarPage> {
               )),
     );
   }
-
-
 }

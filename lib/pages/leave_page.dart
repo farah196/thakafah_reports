@@ -1,8 +1,7 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:thakafah_reports/core/viewModels/leave_vmodel.dart';
-import 'package:thakafah_reports/shared_widget/app_theme.dart';
-import '../core/viewModels/add_model.dart';
+import '../constant/app_strings.dart';
 import '../shared_widget/button_widget.dart';
 import '../shared_widget/snackbar.dart';
 import '../shared_widget/text_field_widget.dart';
@@ -18,7 +17,7 @@ class LeavePage extends StatefulWidget {
 class _LeavePageState extends State<LeavePage>
     with SingleTickerProviderStateMixin {
   String selectedReason = "";
-  List<String> reasons = ["", "مرضية", "عرضية"];
+  List<String> reasons = ["",Strings.sickReason, Strings.normalReason];
   var selectedDate = "";
   var returnDate = "";
   TextEditingController dayOffReasonController = TextEditingController();
@@ -27,8 +26,8 @@ class _LeavePageState extends State<LeavePage>
   TextEditingController minutesController = TextEditingController();
   late TabController _tabController;
   final List<Tab> myTabs = <Tab>[
-    Tab(text: "مغادرة"),
-    Tab(text: "إجازة"),
+    Tab(text: Strings.leave),
+    Tab(text: Strings.dayOff),
   ];
   int selectedIndex = 1;
 
@@ -74,7 +73,7 @@ class _LeavePageState extends State<LeavePage>
               20,
             ),
             child: Text(
-              "طلب إجازة / مغادرة",
+              Strings.requestLeaveSubject,
               textDirection: TextDirection.rtl,
               style: theme.textTheme.titleLarge,
             ),
@@ -134,7 +133,7 @@ class _LeavePageState extends State<LeavePage>
                             child: child!,
                           );
                         },
-                        cancelText: "إلغاء",
+                        cancelText: Strings.cancel,
                         initialDate: DateTime.now(),
                         //get today's date
                         firstDate: DateTime(2000),
@@ -159,7 +158,7 @@ class _LeavePageState extends State<LeavePage>
                   ),
                 ),
                 Text(
-                  "# تاريخ بدء الإجازة",
+                  Strings.dateOfDayOff,
                   style: theme.textTheme.bodyLarge,
                   textDirection: TextDirection.rtl,
                 ),
@@ -204,7 +203,7 @@ class _LeavePageState extends State<LeavePage>
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: Text(
-                      "# حدد نوع الإجازة",
+                      Strings.typeOfDayOff,
                       style: theme.textTheme.bodyLarge,
                       textDirection: TextDirection.rtl,
                     ),
@@ -252,7 +251,7 @@ class _LeavePageState extends State<LeavePage>
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: Text(
-                      "# حدد عدد الأيام",
+                      Strings.numOfDayOff,
                       style: theme.textTheme.bodyLarge,
                       textDirection: TextDirection.rtl,
                     ),
@@ -263,7 +262,7 @@ class _LeavePageState extends State<LeavePage>
           child: Align(
             alignment: Alignment.topRight,
             child: Text(
-              "# سبب الإجازة",
+            Strings.reasonOfDayOff,
               style: theme.textTheme.bodyLarge,
               textDirection: TextDirection.rtl,
             ),
@@ -272,8 +271,7 @@ class _LeavePageState extends State<LeavePage>
 
         Padding(
           padding: const EdgeInsets.only(top: 15, right: 30, left: 30),
-          child: Column(
-            children: [
+          child:
               SharedEditText(
                 textEditingController: dayOffReasonController,
                 label: "",
@@ -289,35 +287,27 @@ class _LeavePageState extends State<LeavePage>
                   model.setError(false);
                 },
                 isObscureText: false,
-              ),
-             Visibility(
-               visible: model.error ,
-               child: Padding(
-                 padding: const EdgeInsets.only(right: 10,left: 10),
-                 child: Divider(color: Colors.red,thickness: 0.6,),
-               ),
-             )
-            ],
+
           ),
         ),
         Padding(
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * 0.08, bottom: 70),
           child: SharedButton(
-            buttonLabel: "تأكيد الإجازة",
+            buttonLabel: Strings.confirmDayOff,
             onClick: () async {
               if(dayOffReasonController.text.isEmpty){
-                SnackbarShare.showMessage("يرجى تعبئة سبب الإجازة");
+                SnackbarShare.showMessage(Strings.fillDayOffReason);
 model.setError(true);
               }else{
                 var success = await model.requestDayOff(dayOffReasonController.text);
                 if (success) {
-                  SnackbarShare.showMessage("تم تأكيد الإجازة بنجاح");
+                  SnackbarShare.showMessage(Strings.confirmDayOffSuccessfully);
                   FocusManager.instance.primaryFocus?.unfocus();
                   model.setError(false);
                 } else {
                   SnackbarShare.showMessage(
-                      "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                      Strings.systemError);
                   FocusManager.instance.primaryFocus?.unfocus();
                   model.setError(false);
                 }
@@ -361,7 +351,7 @@ model.setError(true);
                             child: child!,
                           );
                         },
-                        cancelText: "إلغاء",
+                        cancelText: Strings.cancel,
                         initialDate: DateTime.now(),
                         //get today's date
                         firstDate: DateTime(2000),
@@ -386,7 +376,7 @@ model.setError(true);
                   ),
                 ),
                 Text(
-                  "# تاريخ المغادرة",
+                  Strings.dateOfLeave,
                   style: theme.textTheme.bodyLarge,
                   textDirection: TextDirection.rtl,
                 ),
@@ -409,7 +399,7 @@ model.setError(true);
                       MediaQuery.of(context).size.width * 0.15,
                       child: Column(
                         children: [
-                          Text("ساعة"),
+                          Text(Strings.hour),
                           SharedEditText(
                             textEditingController: hoursController,
                             label:  "",
@@ -435,7 +425,7 @@ model.setError(true);
                       MediaQuery.of(context).size.width * 0.15,
                       child: Column(
                         children: [
-                          Text("دقيقة"),
+                          Text(Strings.minute),
                           SharedEditText(
                             textEditingController:
                             minutesController,
@@ -495,7 +485,7 @@ model.setError(true);
           child: Align(
             alignment: Alignment.topRight,
             child: Text(
-              "# سبب المغادرة",
+           Strings.reasonOfLeave,
               style: theme.textTheme.bodyLarge,
               textDirection: TextDirection.rtl,
             ),
@@ -518,18 +508,18 @@ model.setError(true);
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * 0.08, bottom: 70),
           child: SharedButton(
-            buttonLabel: "تأكيد المغادرة",
+            buttonLabel: Strings.confirmLeaveRequest,
             onClick: () async {
               if(leaveReasonController.text.isEmpty|| (hoursController.text.isEmpty||minutesController.text.isEmpty)){
-                SnackbarShare.showMessage("يرجى تعبئة كامل الحقول");
+                SnackbarShare.showMessage(Strings.emptyField);
 
               }else{
                 var success = await model.requestLeave(leaveReasonController.text);
                 if (success) {
-                  SnackbarShare.showMessage("تم تأكيد المغادرة بنجاح");
+                  SnackbarShare.showMessage(Strings.confirmLeaveSuccessfully);
                 } else {
                   SnackbarShare.showMessage(
-                      "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                   Strings.systemError);
                 }
               }
 

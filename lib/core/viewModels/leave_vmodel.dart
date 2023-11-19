@@ -1,3 +1,4 @@
+import '../../constant/app_strings.dart';
 import '../../locator.dart';
 import '../base_model.dart';
 import '../services/api_service.dart';
@@ -6,9 +7,9 @@ class LeaveVModel extends BaseModel {
   final ApiService _api = locator<ApiService>();
   DateTime selectedDate = DateTime.now();
   late var formattedDate;
-  List<String> titleList = ["عرضية", "مرضية"];
+  List<String> titleList = [Strings.normalReason, Strings.sickReason];
   List<int> dayList = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-  String selectedTitle = "عرضية";
+  String selectedTitle = Strings.normalReason;
   int selectedDay = 1;
   bool error = false;
   late double duration;
@@ -50,7 +51,6 @@ class LeaveVModel extends BaseModel {
     bool success = false;
     try {
       var obj = await _api.requestLeave(selectedDate.toString(), note, duration);
-
       if (obj.result != null && obj.result!.success! == true) {
         if (obj.result!.success!) {
           success = true;
@@ -73,7 +73,7 @@ class LeaveVModel extends BaseModel {
 
     bool success = false;
     try {
-      String type = (selectedTitle=="عرضية")?"normal":"sickness";
+      String type = (selectedTitle==Strings.normalReason)?"normal":"sickness";
       var obj = await _api.requestDayOff(selectedDate.toString(), type, note, selectedDay);
 
       if (obj.result != null && obj.result!.success! == true) {

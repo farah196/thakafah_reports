@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rive/rive.dart';
 import 'package:thakafah_reports/shared_widget/snackbar.dart';
+import '../constant/app_strings.dart';
 import '../core/model/report_details.dart';
 import '../core/viewModels/timesheet_vmodel.dart';
 import '../core/viewstate.dart';
@@ -90,7 +91,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                             ),
                           )),
                       Text(
-                        " تقرير العمل لشهر ",
+                       Strings.timesheetSubject,
                         textDirection: TextDirection.rtl,
                         style: theme.textTheme.titleLarge,
                       ),
@@ -136,16 +137,16 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                       ),
                                       leading: Text(
                                         task.dayOff!
-                                            ? "إجازة"
+                                            ? Strings.dayOff
                                             : model.durationInTime(durationSum),
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
                                             color: task.dayOff!
                                                 ? Colors.black
-                                                : durationSum > 8
+                                                : durationSum >= 8
                                                     ? Colors.green
-                                                    : Colors.red),
+                                                    :durationSum==0?Colors.red: Colors.yellow[700]),
                                         textAlign: TextAlign.center,
                                       ),
                                       contentPadding:
@@ -164,7 +165,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                               0.2,
                                       child: task.dayOff!
                                           ? Text(
-                                              "تم تعيين هذا اليوم ، كيوم إجازة",
+                                             Strings.dayOffLabel,
                                               textAlign: TextAlign.center,
                                             )
                                           : task.taskInfo!.isNotEmpty
@@ -182,7 +183,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                       children: [
                                                         task.leave!>0.0 ?
                                                         taskInfoItem(
-                                                            "مغادرة",
+                                                            Strings.leave,
                                                             model.durationInTime(
                                                                 task.leave!),
                                                             theme):SizedBox(),
@@ -202,13 +203,13 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                               : Column(
                                                 children: [
                                                   task.leave!>0.0 ?taskInfoItem(
-                                                      "مغادرة",
+                                                      Strings.leave,
                                                       model.durationInTime(
                                                           task.leave!),
                                                       theme):SizedBox(),
                                                   task.leave!>0.0 ? Divider():SizedBox(),
                                                   Text(
-                                                      "لا يوجد مهام مضاف",
+                                                      Strings.noTaskAdded,
                                                       textAlign: TextAlign.center,
                                                     ),
                                                 ],
@@ -236,7 +237,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: Text(
-                        "لا يوجد قائمة متاحة لهذا الشهر",
+                       Strings.timesheetEmpty,
                         style: theme.textTheme.displayMedium,
                       ),
                     ),
@@ -310,7 +311,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                 model.detailsObj
                                                     .doneMainHourInMonth!,
                                                 true),
-                                            titleWidget("ساعات العمل المنجزة"),
+                                            titleWidget(Strings.doneHours),
                                           ],
                                         ),
                                         Divider(),
@@ -324,7 +325,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                     .doneOvertimeHourInMonth!,
                                                 true),
                                             titleWidget(
-                                                "الساعات الاضافية المنجزة"),
+                                               Strings.doneOverTimeHours),
                                           ],
                                         ),
                                       ],
@@ -349,7 +350,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                     .mainExpectedHourInMonth!,
                                                 0.0,
                                                 false),
-                                            titleWidget("ساعات العمل المتوقعة"),
+                                            titleWidget(Strings.expectedHours),
                                           ],
                                         ),
                                         Divider(),
@@ -362,7 +363,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                 0.0,
                                                 false),
                                             titleWidget(
-                                                "الساعات الاضافية المتوقعة"),
+                                                Strings.expectedOverTimeHours),
                                           ],
                                         ),
                                       ],
@@ -385,7 +386,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                               .detailsObj.totalLeave!
                                               .toString()),
                                           titleWidget(
-                                              "عدد ساعات المغادرة المأخوذة"),
+                                              Strings.leaveHours),
                                         ],
                                       ),
                                     ),
@@ -404,7 +405,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                   .detailsObj.normalDaysOff!
                                                   .toString()),
                                               titleWidget(
-                                                  "عدد الإجازات العرضية المأخوذة"),
+                                                 Strings.numOfNormalDayOff),
                                             ],
                                           ),
                                         ),
@@ -418,7 +419,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                                 .detailsObj.sicknessDaysOff!
                                                 .toString()),
                                             titleWidget(
-                                                "عدد الإجازات المرضية المطلوبة"),
+                                               Strings.numOfSickDayOff),
                                           ],
                                         )),
                                       ],
@@ -429,28 +430,28 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 20),
                                 child: SharedButton(
-                                  buttonLabel: "تأكيد القائمة",
+                                  buttonLabel: Strings.confirmSheet,
                                   onClick: () async {
                                     if (model.detailsObj.totalHoursShortage! >
                                         0.0) {
                                       // set up the button
                                       Widget okButton = TextButton(
-                                        child: Text("تأكيد القائمة"),
+                                        child: Text(Strings.confirmSheet,),
                                         onPressed: () async {
                                           var success =
                                               await model.confirmSheet();
                                           if (success) {
                                             SnackbarShare.showMessage(
-                                                "تم تأكيد القائمة بنجاح");
+                                              Strings.sheetConfirmed);
                                           } else {
                                             SnackbarShare.showMessage(
-                                                "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                                                Strings.systemError);
                                           }
                                           Navigator.pop(context);
                                         },
                                       );
                                       Widget cancelButton = TextButton(
-                                        child: Text("الغاء"),
+                                        child: Text(Strings.cancel),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -458,7 +459,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                                       // set up the AlertDialog
                                       AlertDialog alert = AlertDialog(
                                         title: Text(
-                                          "يرجى الانتباه",
+                                          Strings.attention,
                                           textAlign: TextAlign.right,
                                         ),
                                         content: Text(
@@ -497,7 +498,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "التفاصيل",
+                          Strings.details,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyLarge,
                         ),

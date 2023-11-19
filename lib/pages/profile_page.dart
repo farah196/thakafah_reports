@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thakafah_reports/shared_widget/app_theme.dart';
 import 'package:thakafah_reports/shared_widget/snackbar.dart';
+import '../constant/app_strings.dart';
 import '../constant/images.dart';
 import '../core/model/profile_model.dart';
 import '../core/services/api_service.dart';
 import '../core/services/timesheet_prefrence.dart';
 import '../locator.dart';
-import '../main.dart';
 import '../shared_widget/notification_handler.dart';
 import 'login_page.dart';
 
@@ -111,16 +111,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     GestureDetector(
                         onTap: () {
                           SnackbarShare.showMessage(
-                              "هذه الخدمة غير متاحة حاليا");
+                              Strings.serviceNotAvailable);
                         },
-                        child: itemProfile(Icons.edit, "تعديل الملف", theme)),
+                        child: itemProfile(Icons.edit, Strings.editProfile, theme)),
                     const Divider(),
                     GestureDetector(
                         onTap: () {
                           showNotificationDialog(context);
                         },
                         child: itemProfile(
-                            Icons.notification_add, "الإشعارات", theme)),
+                            Icons.notification_add, Strings.notifications, theme)),
                     const Divider(),
                     GestureDetector(
                         onTap: () {
@@ -135,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                         },
                         child:
-                            itemProfile(Icons.logout, "تسجيل الخروج", theme)),
+                            itemProfile(Icons.logout, Strings.logout, theme)),
                   ],
                 ),
               ),
@@ -214,33 +214,52 @@ class _ProfilePageState extends State<ProfilePage> {
     // set up the button
     Widget okButton = TextButton(
       child: Text(
-        "نعم",
+       Strings.yes,
       ),
-      onPressed: () {
+      onPressed: () async{
+         NotificationService.notificationService.init().then((value) {
+           SnackbarShare.showMessage(Strings.submitNotifications);
+           Navigator.pop(context);
+         });
 
 
-        NotificationService.notificationService.scheduleFromNotification().then((value) {
-          SnackbarShare.showMessage("تم تعيين الاشعارات");
-          Navigator.pop(context);
-        });
-      },
-    );
+
+        // bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+        // if (!isAllowed) isAllowed = await displayNotificationRationale(context);
+        // if (!isAllowed) return;
+        //
+        //  myNotifyScheduleInHours(
+        //     title: 'test',
+        //     msg: 'test message',
+        //     heroThumbUrl:
+        //     'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
+        //
+        //     username: 'test user',
+        //   ).then((value) {
+        //
+        //      SnackbarShare.showMessage("تم تعيين الاشعارات");
+        //      Navigator.pop(context);
+        //  });
+      });
+
+
+
     Widget noButton = TextButton(
-      child: Text("لا"),
+      child: Text(Strings.cancel),
       onPressed: () async {
         NotificationService.notificationService.cancelAllNotifications();
-        SnackbarShare.showMessage("تم حذف جميع الاشعارات");
+        SnackbarShare.showMessage(Strings.allNotificationsDeleted);
         Navigator.pop(context);
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        "الإشعارات",
+        Strings.notifications,
         textDirection: TextDirection.rtl,
       ),
       content: Text(
-        "هل تود تفعيل الإشعارات",
+       Strings.notificationTitle,
         textDirection: TextDirection.rtl,
       ),
       actions: [
@@ -257,4 +276,6 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
+
 }

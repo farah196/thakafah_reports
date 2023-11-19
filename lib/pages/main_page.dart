@@ -98,7 +98,7 @@ class _MainPageState extends State<MainPage> {
               selectedIndex = 2;
             });
           },
-          tooltip: "اضافة مهام جديد",
+          tooltip: Strings.addNewTask,
           elevation: 4.0,
           child: Container(
             margin: const EdgeInsets.all(15.0),

@@ -1,16 +1,15 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:thakafah_reports/pages/main_page.dart';
-
 import 'package:timezone/timezone.dart' as tz;
 import 'dart:io' show Platform;
+import '../constant/app_strings.dart';
 import '../main.dart';
 
 class NotificationService {
-  // Singleton pattern
+
   static final NotificationService notificationService =
       NotificationService._internal();
 
@@ -78,12 +77,18 @@ class NotificationService {
       },
     );
 
-    await flutterLocalNotificationsPlugin.pendingNotificationRequests().then((value) {
-      if(value.isEmpty){
-        NotificationService.notificationService.scheduleDailyTenAMNotification();
-      }
-    });
+    var a =await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    NotificationService.notificationService.scheduleDailyTenAMNotification();
+
+
+   // NotificationService.notificationService.scheduleDailyTenAMNotification();
+    // await flutterLocalNotificationsPlugin.pendingNotificationRequests().then((value) {
+    //   if(value.isNotEmpty){
+    //     NotificationService.notificationService.scheduleDailyTenAMNotification();
+    //   }
+    // });
   }
+  int id = 0;
 
 
 
@@ -128,23 +133,21 @@ class NotificationService {
 
     }
   }
-  Future<void> scheduleFromNotification() async {
-    await flutterLocalNotificationsPlugin.pendingNotificationRequests().then((value) {
-      if(value.isEmpty){
-        NotificationService.notificationService.scheduleDailyTenAMNotification();
-      }
-    });
-}
+
   Future<void> scheduleDailyTenAMNotification() async {
+    final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         123,
-        'تذكير',
-        'لا تنسى تعبئة تقرير العمل ... بارك الله بك',
-       await _nextInstanceOfTenAM(),
+        Strings.reminder,
+        Strings.reminderTitle,
+       // tz.TZDateTime.now(tz.getLocation(timeZoneName!)).add(const Duration(seconds: 5)),
+        await _nextInstanceOfTenAM(),
          NotificationDetails(
           android: androidNotificationDetails,
+           iOS: iOSNotificationDetails
         ),
+
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,

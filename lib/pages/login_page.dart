@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -53,15 +53,6 @@ class _LoginPageState extends State<LoginPage>  {
     }
   }
 
-  // @override
-  // void didChangeMetrics() {
-  //   super.didChangeMetrics();
-  //   final value = WidgetsBinding.instance.window.viewInsets.bottom;
-  //   if (value == 0) {
-  //     userNameFocus.unfocus();
-  //     passwordFocus.unfocus();
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

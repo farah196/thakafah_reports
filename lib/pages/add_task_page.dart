@@ -1,12 +1,9 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
-
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
 import 'package:thakafah_reports/core/viewModels/add_model.dart';
 import 'package:thakafah_reports/pages/main_page.dart';
-
 import '../constant/app_strings.dart';
 import '../core/model/task_model.dart';
 import '../core/model/title_model.dart';
@@ -133,7 +130,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     child: child!,
                                   );
                                 },
-                                cancelText: "إلغاء",
+                                cancelText: Strings.cancel,
                                 initialDate: selectedDay,
                                 //get today's date
                                 firstDate: DateTime(2000),
@@ -164,7 +161,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Text(
-                          widget.edit ? " تعديل المهام" : "اضافة مهام جديد",
+                          widget.edit ? Strings.editTask : Strings.addNewTask,
                           style: theme.textTheme.displayLarge,
                         ),
                       ),
@@ -221,7 +218,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Text(
-                          "حدد عنوان المهام",
+                          Strings.taskSubject,
                           style: theme.textTheme.bodyLarge,
                         ),
                       ),
@@ -232,7 +229,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     Align(
                       alignment: Alignment.topRight,
                       child: Text(
-                        "الوصف",
+                        Strings.description,
                         style: theme.textTheme.bodyLarge,
                       ),
                     ),
@@ -258,7 +255,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     Align(
                       alignment: Alignment.topRight,
                       child: Text(
-                        "الوقت المستغرق",
+                       Strings.duration,
                         style: theme.textTheme.bodyLarge,
                       ),
                     ),
@@ -278,7 +275,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       MediaQuery.of(context).size.width * 0.15,
                                   child: Column(
                                     children: [
-                                      Text("ساعة"),
+                                      Text(Strings.minute),
                                       SharedEditText(
                                         textEditingController: hoursController,
                                         label: widget.edit ? hours : "",
@@ -304,7 +301,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       MediaQuery.of(context).size.width * 0.15,
                                   child: Column(
                                     children: [
-                                      Text("دقيقة"),
+                                      Text(Strings.minute),
                                       SharedEditText(
                                         textEditingController:
                                             minutesController,
@@ -368,7 +365,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'يمكنك تحديد الوقت المستغرق من هنا',
+                                  Strings.durationTooltip,
                                 ),
                               ),
                             ),
@@ -392,18 +389,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     : descController.text);
                             if (success) {
                               SnackbarShare.showMessage(
-                                  "تم تعديل المهمة بنجاح");
+                                  Strings.doneEdits);
                               Navigator.pop(context, true);
                             } else {
                               SnackbarShare.showMessage(
-                                  "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                                  Strings.systemError);
                             }
                           } else {
                             if (hoursController.text.isEmpty ||
                                 minutesController.text.isEmpty ||
                                 descController.text.isEmpty) {
                               SnackbarShare.showMessage(
-                                  "يرجى تعبئة كامل الحقول");
+                                  Strings.emptyField);
                             } else {
                               model.setDuration(int.parse(hoursController.text),
                                   int.parse(minutesController.text));
@@ -414,10 +411,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 minutesController.clear();
                                 descController.clear();
                                 SnackbarShare.showMessage(
-                                    "تم اضافة المهمة بنجاح");
+                                    Strings.doneAdd);
                               } else {
                                 SnackbarShare.showMessage(
-                                    "حدث خطأ ، يرجى المحاولة مرة أخرى");
+                                    Strings.systemError);
                               }
                             }
                           }
@@ -435,6 +432,4 @@ class _AddTaskPageState extends State<AddTaskPage> {
           ),
         ));
   }
-
-
 }

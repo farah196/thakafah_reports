@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rive/rive.dart';
 import 'package:thakafah_reports/core/services/timesheet_prefrence.dart';
 import 'package:thakafah_reports/pages/login_page.dart';
@@ -18,9 +18,14 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+ // await NotificationService.initializeLocalNotifications();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   tz.initializeTimeZones();
   final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
-  await NotificationService.notificationService.init();
+
   await NotificationService.notificationService.requestPermissions();
 
   tz.setLocalLocation(tz.getLocation(timeZoneName!));

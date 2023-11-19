@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:thakafah_reports/core/model/report_details.dart';
 import 'package:thakafah_reports/core/model/task_model.dart';
 import 'package:thakafah_reports/core/model/update_task_model.dart';
@@ -28,10 +26,7 @@ class ApiService {
   }
 
   Future<LoginResult> login(String email, String password) async {
-    //"test.user@thakafah.org"   "test"
-
     try {
-      // SnackbarShare.init(context);
       Map<String, dynamic> requestObject = {
         'jsonrpc': '2.0',
         'params': {'db': db, 'login': email, 'password': password},
@@ -46,16 +41,8 @@ class ApiService {
 
       RegExp sessionIdRegex = RegExp(r'session_id=([^;]+)');
       String sessionId = sessionIdRegex.firstMatch(rawCookie)?.group(1) ?? '';
-
-      //RegExp expiresRegex = RegExp(r'Expires=([^;]+)');
-      // String expiresString = expiresRegex.firstMatch(rawCookie)?.group(1) ?? '';
-
-      // DateFormat inputFormat = DateFormat("EEE, dd-MMM-yyyy HH:mm:ss 'GMT'");
-      // DateTime expires = inputFormat.parseUtc(expiresString);
-
       auth = sessionId;
       TimeSheetPreference.setAuth(auth);
-      // TimeSheetPreference.setExpireSession(expires);
       return LoginResult.fromJson(json.decode(response.body));
     } catch (e) {
       // if (e is SocketException) {
@@ -78,7 +65,6 @@ class ApiService {
         body: jsonEncode(data),
       );
       auth = userAuth;
-      var a = UpdateResult.fromJson(json.decode(response.body));
       return UpdateResult.fromJson(json.decode(response.body));
     } catch (e) {
       return UpdateResult();
@@ -144,7 +130,6 @@ class ApiService {
         headers: ApiService.headers(auth),
         body: jsonEncode(data),
       );
-      var a = UpdateTask.fromJson(json.decode(response.body));
       return UpdateTask.fromJson(json.decode(response.body));
     } catch (e) {
       return UpdateTask();
@@ -210,7 +195,6 @@ class ApiService {
         headers: ApiService.headers(auth),
         body: jsonEncode(data),
       );
-      var a = ReportDetails.fromJson(json.decode(response.body));
       return ReportDetails.fromJson(json.decode(response.body));
     } catch (e) {
       return ReportDetails();
@@ -254,7 +238,6 @@ class ApiService {
         headers: ApiService.headers(auth),
         body: jsonEncode(data),
       );
-      var a = UpdateResult.fromJson(json.decode(response.body));
       return UpdateResult.fromJson(json.decode(response.body));
     } catch (e) {
       return UpdateResult();
@@ -299,6 +282,4 @@ class ApiService {
       return Profile();
     }
   }
-
-
 }
