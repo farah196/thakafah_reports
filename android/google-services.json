@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922542347086",
+    "project_id": "thakafah-reports",
+    "storage_bucket": "thakafah-reports.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922542347086:android:0d16e1866965f0f09a441f",
+        "android_client_info": {
+          "package_name": "com.thakafah.report.thakafah_reports"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMGMt2OaDbQlpnz935FEWzc-yESMZ7WQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
