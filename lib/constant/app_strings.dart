@@ -75,4 +75,5 @@ class Strings
   static const String submitNotifications =   "تم تعيين الاشعارات";
   static const String allNotificationsDeleted =  "تم حذف جميع الاشعارات" ;
   static const String notificationTitle =  "هل تود تفعيل الإشعارات" ;
+  static const String setNotifications = "تفعيل الإشعارات";
 }

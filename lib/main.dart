@@ -56,9 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     ThemeData theme = Theme.of(context);
-    return
-
-        FutureBuilder<Map<String, dynamic>>(
+    return FutureBuilder<Map<String, dynamic>>(
           future: loadPreferences(),
           builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -82,6 +80,7 @@ class MyApp extends StatelessWidget {
               String auth = snapshot.data!['auth'];
               int userID = snapshot.data!['user_id'];
               bool success = snapshot.data!['success'];
+
               if (success == true) {
                 if (auth.isNotEmpty && userID != 0) {
                   ApiService.auth = auth;
@@ -132,12 +131,16 @@ class MyApp extends StatelessWidget {
   }
 
   Future<Map<String, dynamic>> loadPreferences() async {
+
+
+
     String auth = await TimeSheetPreference.getAuth();
     int userID = await TimeSheetPreference.getUserID();
 
     // bool onBoardingShow = await SchoolSharedPreference.getIfOnBoardingShow();
     // DateTime? expireSession = await SchoolSharedPreference.getExpireSession() ;
     var success = await checkSession(auth);
+
     return {
       'auth': auth,
       'user_id': userID,

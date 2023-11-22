@@ -1,3 +1,6 @@
+import 'package:day_night_time_picker/lib/constants.dart';
+import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thakafah_reports/shared_widget/app_theme.dart';
@@ -19,6 +22,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Time _time = Time(hour: 0, minute: 00, second: 00);
 
   @override
   void initState() {
@@ -113,14 +117,37 @@ class _ProfilePageState extends State<ProfilePage> {
                           SnackbarShare.showMessage(
                               Strings.serviceNotAvailable);
                         },
-                        child: itemProfile(Icons.edit, Strings.editProfile, theme)),
+                        child: itemProfile(
+                            Icons.edit, Strings.editProfile, theme)),
                     const Divider(),
                     GestureDetector(
                         onTap: () {
-                          showNotificationDialog(context);
+                          Navigator.of(context).push(showPicker(
+                            okStyle: theme.textTheme.titleMedium!,
+                            okText: Strings.setNotifications,
+                            disableAutoFocusToNextInput: true,
+                            showSecondSelector: false,
+                            elevation: 1,
+                            showCancelButton: false,
+                            value: _time,
+                            onChange: (Time time) {
+                              NotificationService.notificationService
+                                  .init(time.hour,time.minute)
+                                  .then((value) {
+                                SnackbarShare.showMessage(
+                                    Strings.submitNotifications);
+                                // Navigator.pop(context);
+                              });
+                            },
+
+                            // iosStylePicker: iosStyle,
+                            minHour: 0,
+                            maxHour: 23,
+                            is24HrFormat: true,
+                          ));
                         },
-                        child: itemProfile(
-                            Icons.notification_add, Strings.notifications, theme)),
+                        child: itemProfile(Icons.notification_add,
+                            Strings.notifications, theme)),
                     const Divider(),
                     GestureDetector(
                         onTap: () {
@@ -210,72 +237,54 @@ class _ProfilePageState extends State<ProfilePage> {
     return profile;
   }
 
-  showNotificationDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text(
-       Strings.yes,
-      ),
-      onPressed: () async{
-         NotificationService.notificationService.init().then((value) {
-           SnackbarShare.showMessage(Strings.submitNotifications);
-           Navigator.pop(context);
-         });
-
-
-
-        // bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
-        // if (!isAllowed) isAllowed = await displayNotificationRationale(context);
-        // if (!isAllowed) return;
-        //
-        //  myNotifyScheduleInHours(
-        //     title: 'test',
-        //     msg: 'test message',
-        //     heroThumbUrl:
-        //     'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
-        //
-        //     username: 'test user',
-        //   ).then((value) {
-        //
-        //      SnackbarShare.showMessage("تم تعيين الاشعارات");
-        //      Navigator.pop(context);
-        //  });
-      });
-
-
-
-    Widget noButton = TextButton(
-      child: Text(Strings.cancel),
-      onPressed: () async {
-        NotificationService.notificationService.cancelAllNotifications();
-        SnackbarShare.showMessage(Strings.allNotificationsDeleted);
-        Navigator.pop(context);
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        Strings.notifications,
-        textDirection: TextDirection.rtl,
-      ),
-      content: Text(
-       Strings.notificationTitle,
-        textDirection: TextDirection.rtl,
-      ),
-      actions: [
-        noButton,
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-
+// showNotificationDialog(BuildContext context) {
+//   // set up the button
+//   Widget okButton = TextButton(
+//     child: Text(
+//      Strings.yes,
+//     ),
+//     onPressed: () async{
+//
+//
+//
+//        NotificationService.notificationService.init().then((value) {
+//          SnackbarShare.showMessage(Strings.submitNotifications);
+//          Navigator.pop(context);
+//        });
+//     });
+//
+//
+//
+//   Widget noButton = TextButton(
+//     child: Text(Strings.cancel),
+//     onPressed: () async {
+//       NotificationService.notificationService.cancelAllNotifications();
+//       SnackbarShare.showMessage(Strings.allNotificationsDeleted);
+//       Navigator.pop(context);
+//     },
+//   );
+//   // set up the AlertDialog
+//   AlertDialog alert = AlertDialog(
+//     title: Text(
+//       Strings.notifications,
+//       textDirection: TextDirection.rtl,
+//     ),
+//     content: Text(
+//      Strings.notificationTitle,
+//       textDirection: TextDirection.rtl,
+//     ),
+//     actions: [
+//       noButton,
+//       okButton,
+//     ],
+//   );
+//
+//   // show the dialog
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   );
+// }
 }

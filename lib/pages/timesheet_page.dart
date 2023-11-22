@@ -231,6 +231,7 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                         child: RiveAnimation.asset(
                           'assets/riv/empty_task.riv',
                           fit: BoxFit.cover,
+
                         ),
                       ),
                     ),

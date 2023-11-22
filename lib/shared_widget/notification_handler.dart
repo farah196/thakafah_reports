@@ -29,6 +29,7 @@ class NotificationService {
       AndroidNotificationDetails(
     "123",
     "report",
+        icon:'@mipmap/ic_launcher',
     playSound: true,
     priority: Priority.high,
     importance: Importance.high,
@@ -43,7 +44,7 @@ class NotificationService {
   // );
  static  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
-  Future<void> init() async {
+  Future<void> init(int hour,int minute) async {
 
     final AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -77,8 +78,12 @@ class NotificationService {
       },
     );
 
-    var a =await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    NotificationService.notificationService.scheduleDailyTenAMNotification();
+    List<PendingNotificationRequest> pendingNotifications =await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    if(pendingNotifications.isNotEmpty){
+      print(pendingNotifications.length);
+      cancelAllNotifications();
+    }
+    NotificationService.notificationService.scheduleDailyTenAMNotification(hour,minute);
 
 
    // NotificationService.notificationService.scheduleDailyTenAMNotification();
@@ -88,7 +93,7 @@ class NotificationService {
     //   }
     // });
   }
-  int id = 0;
+
 
 
 
@@ -134,7 +139,7 @@ class NotificationService {
     }
   }
 
-  Future<void> scheduleDailyTenAMNotification() async {
+  Future<void> scheduleDailyTenAMNotification(int hour,int minute) async {
     final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -142,7 +147,7 @@ class NotificationService {
         Strings.reminder,
         Strings.reminderTitle,
        // tz.TZDateTime.now(tz.getLocation(timeZoneName!)).add(const Duration(seconds: 5)),
-        await _nextInstanceOfTenAM(),
+        await _nextInstanceOfTenAM(hour,minute),
          NotificationDetails(
           android: androidNotificationDetails,
            iOS: iOSNotificationDetails
@@ -154,13 +159,13 @@ class NotificationService {
         matchDateTimeComponents: DateTimeComponents.time);
   }
 
-  Future<tz.TZDateTime> _nextInstanceOfTenAM() async {
+  Future<tz.TZDateTime> _nextInstanceOfTenAM(int hour, int minute) async {
 
 
     final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
     final tz.TZDateTime now = tz.TZDateTime.now(tz.getLocation(timeZoneName!));
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour,minute);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
