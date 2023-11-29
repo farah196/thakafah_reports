@@ -76,4 +76,6 @@ class Strings
   static const String allNotificationsDeleted =  "تم حذف جميع الاشعارات" ;
   static const String notificationTitle =  "هل تود تفعيل الإشعارات" ;
   static const String setNotifications = "تفعيل الإشعارات";
+  static const String areYouSure = "هل أنت متأكد ؟";
+  static const String exitApp = "تريد الخروج من النطبيق ";
 }

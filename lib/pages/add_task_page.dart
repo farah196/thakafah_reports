@@ -1,4 +1,6 @@
 import 'package:duration_picker/duration_picker.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -40,6 +42,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     SnackbarShare.init(context);
     if (widget.edit) {
       AppBarWidget.init(context, [], true);
+      descController.text = widget.taskObj.desc!;
     }
     TimeSheetPreference.getShowDuration().then((value) {
       if (value == true) {
@@ -78,6 +81,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget mainWidget(AddModel model, ThemeData theme) {
+
+    FirebasePerformance _performance = FirebasePerformance.instance;
+    bool _isPerformanceCollectionEnabled = false;
     var hours = "";
     var minutes = "";
     if (widget.edit) {
@@ -97,6 +103,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+
+
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
@@ -271,11 +279,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.15,
+                                  width: MediaQuery.of(context).size.width * 0.15,
                                   child: Column(
                                     children: [
-                                      Text(Strings.minute),
+                                      Text(Strings.hour),
                                       SharedEditText(
                                         textEditingController: hoursController,
                                         label: widget.edit ? hours : "",

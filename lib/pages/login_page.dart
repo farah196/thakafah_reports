@@ -26,31 +26,31 @@ class _LoginPageState extends State<LoginPage>  {
   FocusNode passwordFocus = FocusNode();
   String username = "";
   String password = "";
-  bool isUserFocus = false;
-  bool isPasswordFocus = false;
+
   @override
   void initState() {
     SnackbarShare.init(context);
-
-    userNameFocus.addListener(_onUserFocusChange);
-    passwordFocus.addListener(_onPasswordFocusChange);
     super.initState();
   }
 
-  void _onUserFocusChange() {
-    if (userNameFocus.hasFocus) {
-      isUserFocus = true;
-    } else {
-      isUserFocus = false;
-    }
-  }
-
-  void _onPasswordFocusChange() {
-    if (passwordFocus.hasFocus) {
-      isPasswordFocus = true;
-    } else {
-      isPasswordFocus = false;
-    }
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text(Strings.areYouSure),
+        content: new Text(Strings.exitApp),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text(Strings.no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text(Strings.yes),
+          ),
+        ],
+      ),
+    )) ?? false;
   }
 
 
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage>  {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return WillPopScope(
-        onWillPop: () async => false,
+        onWillPop : _onWillPop,
         child: BaseView<LoginModel>(
             onModelReady: (model) => model.msg,
             builder: (context, model, child) {
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage>  {
                                       horizontal:
                                           MediaQuery.of(context).size.width * 0.1,
                                     ),
-                                    child: Column(
+                                    child:  Column(
                                       children: [
                                         Container(
                                           margin: const EdgeInsets.only(top: 140),
@@ -157,35 +157,38 @@ class _LoginPageState extends State<LoginPage>  {
                                           ),
                                         )
                                       ],
-                                    ),
+                                      ),
                                   )),
                             ),
                             Align(
                                 alignment:
-                                    isUserFocus == true || isPasswordFocus == true
+                                    userNameFocus.hasFocus == true || passwordFocus.hasFocus == true
                                         ? Alignment.centerRight
                                         : Alignment.center,
                                 child: Padding(
                                     padding: EdgeInsets.only(
-                                        bottom: isUserFocus == true ||
-                                                isPasswordFocus == true
-                                            ? 190
-                                            : 80,
-                                        right: isUserFocus == true ||
-                                                isPasswordFocus == true
-                                            ? 20
+                                        bottom: userNameFocus.hasFocus  == true ||
+                                            passwordFocus.hasFocus == true
+                                            ? MediaQuery.of(context).size.height *
+                                            0.25
+                                            : MediaQuery.of(context).size.height *
+                                            0.1,
+                                        right: userNameFocus.hasFocus  == true ||
+                                            passwordFocus.hasFocus == true
+                                            ? MediaQuery.of(context).size.width *
+                                            0.05
                                             : 0),
                                     child: ClipRect(
                                         child: Image.asset(
                                       Images.logo_transparent,
-                                      height: isUserFocus == true ||
-                                              isPasswordFocus == true
+                                      height: userNameFocus.hasFocus  == true ||
+                                          passwordFocus.hasFocus == true
                                           ? MediaQuery.of(context).size.height *
                                               0.1
                                           : MediaQuery.of(context).size.height *
                                               0.5,
-                                      width: isUserFocus == true ||
-                                              isPasswordFocus == true
+                                      width: userNameFocus.hasFocus  == true ||
+                                          passwordFocus.hasFocus == true
                                           ? MediaQuery.of(context).size.width *
                                               0.2
                                           : MediaQuery.of(context).size.width *

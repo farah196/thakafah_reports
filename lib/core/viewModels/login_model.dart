@@ -11,7 +11,8 @@ class LoginModel extends BaseModel {
 
   var msg = "";
   bool isLoggedIn = false;
-
+  bool isUserFocus = false;
+  bool isPasswordFocus = false;
   var auth;
 
   setAuth(String sessionID) {
@@ -39,4 +40,6 @@ class LoginModel extends BaseModel {
     notifyListeners();
     return success;
   }
+
+
 }

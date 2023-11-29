@@ -1,87 +1,26 @@
 {
   "project_info": {
-    "project_number": "948177886168",
-    "project_id": "thakafah",
-    "storage_bucket": "thakafah.appspot.com"
+    "project_number": "922542347086",
+    "project_id": "thakafah-reports",
+    "storage_bucket": "thakafah-reports.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:948177886168:android:68083486f6beb68f70f0ad",
+        "mobilesdk_app_id": "1:922542347086:android:0d16e1866965f0f09a441f",
         "android_client_info": {
           "package_name": "com.thakafah.report.thakafah_reports"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "948177886168-5qu872b0dsbooefush2do06ef2r5bq66.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAA0W6HleUwNW8G7UBKLXRg4YSMEOiZjVI"
+          "current_key": "AIzaSyDMGMt2OaDbQlpnz935FEWzc-yESMZ7WQY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "948177886168-5qu872b0dsbooefush2do06ef2r5bq66.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "948177886168-hqtgu8ukpr2grdgahb7ie23i8p3s0bno.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.thakafah.thakafah"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:948177886168:android:17767ab1998d4a4f70f0ad",
-        "android_client_info": {
-          "package_name": "com.thakafah.thakafah"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "948177886168-bb4cns1hr5idcd6jn8mf34aa4kmkuosm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.thakafah.thakafah",
-            "certificate_hash": "0f584b646457ef27c3fd59c7790e19e5af3c00a0"
-          }
-        },
-        {
-          "client_id": "948177886168-5qu872b0dsbooefush2do06ef2r5bq66.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAA0W6HleUwNW8G7UBKLXRg4YSMEOiZjVI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "948177886168-5qu872b0dsbooefush2do06ef2r5bq66.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "948177886168-hqtgu8ukpr2grdgahb7ie23i8p3s0bno.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.thakafah.thakafah"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

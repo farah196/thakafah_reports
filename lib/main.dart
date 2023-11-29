@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -9,16 +14,22 @@ import 'package:thakafah_reports/shared_widget/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:thakafah_reports/shared_widget/notification_handler.dart';
 import 'core/services/api_service.dart';
+import 'firebase_options.dart';
 import 'locator.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
+const _kTestingCrashlytics = true;
+const _kShouldTestAsyncErrorOnInit = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
- // await NotificationService.initializeLocalNotifications();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -52,8 +63,33 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  Future<void> _testAsyncErrorOnInit() async {
+
+    Future<void>.delayed(const Duration(seconds: 2), () {
+      final List<int> list = <int>[];
+      print(list[100]);
+    });
+  }
+  Future<void> _initializeFlutterFire() async {
+    if (_kTestingCrashlytics) {
+      // Force enable crashlytics collection enabled if we're testing it.
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    } else {
+      // Else only enable it in non-debug builds.
+      // You could additionally extend this to allow users to opt-in.
+      await FirebaseCrashlytics.instance
+          .setCrashlyticsCollectionEnabled(!kDebugMode);
+    }
+
+    if (_kShouldTestAsyncErrorOnInit) {
+      await _testAsyncErrorOnInit();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
 
     ThemeData theme = Theme.of(context);
     return FutureBuilder<Map<String, dynamic>>(
@@ -133,7 +169,7 @@ class MyApp extends StatelessWidget {
   Future<Map<String, dynamic>> loadPreferences() async {
 
 
-
+    _initializeFlutterFire();
     String auth = await TimeSheetPreference.getAuth();
     int userID = await TimeSheetPreference.getUserID();
 

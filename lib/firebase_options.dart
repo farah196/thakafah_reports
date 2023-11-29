@@ -44,40 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCbtc8UxjR83RjrYJhn4PEJlT6QXl4xbTc',
-    appId: '1:948177886168:web:ef739beef737f6ba70f0ad',
-    messagingSenderId: '948177886168',
-    projectId: 'thakafah',
-    authDomain: 'thakafah.firebaseapp.com',
-    storageBucket: 'thakafah.appspot.com',
-    measurementId: 'G-5J0MT1MTDT',
+    apiKey: 'AIzaSyCmBMnqo2j5JvGjB4QHsVPjyxGpQUElQdE',
+    appId: '1:922542347086:web:0cf5c490f8e1a5299a441f',
+    messagingSenderId: '922542347086',
+    projectId: 'thakafah-reports',
+    authDomain: 'thakafah-reports.firebaseapp.com',
+    storageBucket: 'thakafah-reports.appspot.com',
+    measurementId: 'G-BV7XQVHTM2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAA0W6HleUwNW8G7UBKLXRg4YSMEOiZjVI',
-    appId: '1:948177886168:android:68083486f6beb68f70f0ad',
-    messagingSenderId: '948177886168',
-    projectId: 'thakafah',
-    storageBucket: 'thakafah.appspot.com',
+    apiKey: 'AIzaSyDMGMt2OaDbQlpnz935FEWzc-yESMZ7WQY',
+    appId: '1:922542347086:android:0d16e1866965f0f09a441f',
+    messagingSenderId: '922542347086',
+    projectId: 'thakafah-reports',
+    storageBucket: 'thakafah-reports.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBPmG8ScDiIz6Ux8KQAdQFFosLfvVm_1L8',
-    appId: '1:948177886168:ios:5020382e21b141ac70f0ad',
-    messagingSenderId: '948177886168',
-    projectId: 'thakafah',
-    storageBucket: 'thakafah.appspot.com',
-    androidClientId: '948177886168-bb4cns1hr5idcd6jn8mf34aa4kmkuosm.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDvjdp_GefAwHYnDcINd7d2QDyJ_F6Z7PA',
+    appId: '1:922542347086:ios:de19354a8c01df1c9a441f',
+    messagingSenderId: '922542347086',
+    projectId: 'thakafah-reports',
+    storageBucket: 'thakafah-reports.appspot.com',
     iosBundleId: 'com.thakafah.report.thakafahReports',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBPmG8ScDiIz6Ux8KQAdQFFosLfvVm_1L8',
-    appId: '1:948177886168:ios:3da310a1d72f7ed670f0ad',
-    messagingSenderId: '948177886168',
-    projectId: 'thakafah',
-    storageBucket: 'thakafah.appspot.com',
-    androidClientId: '948177886168-bb4cns1hr5idcd6jn8mf34aa4kmkuosm.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDvjdp_GefAwHYnDcINd7d2QDyJ_F6Z7PA',
+    appId: '1:922542347086:ios:d76b8ded8fd2b53c9a441f',
+    messagingSenderId: '922542347086',
+    projectId: 'thakafah-reports',
+    storageBucket: 'thakafah-reports.appspot.com',
     iosBundleId: 'com.thakafah.report.thakafahReports.RunnerTests',
   );
 }

@@ -140,7 +140,7 @@ class NotificationService {
   }
 
   Future<void> scheduleDailyTenAMNotification(int hour,int minute) async {
-    final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
+
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         123,
