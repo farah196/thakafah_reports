@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage>  {
                                         bottom: userNameFocus.hasFocus  == true ||
                                             passwordFocus.hasFocus == true
                                             ? MediaQuery.of(context).size.height *
-                                            0.25
+                                            0.27
                                             : MediaQuery.of(context).size.height *
                                             0.1,
                                         right: userNameFocus.hasFocus  == true ||

@@ -337,6 +337,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       context: context,
                                       initialTime: const Duration(seconds: 60),
                                       baseUnit: BaseUnit.minute,
+
                                     );
                                     if (!mounted) return;
                                     print(resultingDuration);
@@ -361,6 +362,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                           10), // Adjust the value as needed
                                     ),
                                     // padding: const EdgeInsets.symmetric(horizontal: 24.0),
+
                                     elevation: 3,
                                     primary: theme
                                         .primaryColorLight, // Background color of the button

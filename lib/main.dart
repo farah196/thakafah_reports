@@ -60,98 +60,98 @@ Future<void> main() async {
       home: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  Future<void> _testAsyncErrorOnInit() async {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-    Future<void>.delayed(const Duration(seconds: 2), () {
-      final List<int> list = <int>[];
-      print(list[100]);
-    });
+class _MyAppState extends State<MyApp> {
+  bool _showLoadingIndicator = false;
+
+
+@override
+  void initState() {
+  _triggerDelay();
+    super.initState();
   }
-  Future<void> _initializeFlutterFire() async {
-    if (_kTestingCrashlytics) {
-      // Force enable crashlytics collection enabled if we're testing it.
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-    } else {
-      // Else only enable it in non-debug builds.
-      // You could additionally extend this to allow users to opt-in.
-      await FirebaseCrashlytics.instance
-          .setCrashlyticsCollectionEnabled(!kDebugMode);
-    }
 
-    if (_kShouldTestAsyncErrorOnInit) {
-      await _testAsyncErrorOnInit();
-    }
+  void _triggerDelay() {
+    Future.delayed(Duration(seconds: 80), () {
+      // Set the flag to show the loading indicator with a delay
+      if (mounted) {
+        setState(() {
+          _showLoadingIndicator = true;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-
     ThemeData theme = Theme.of(context);
+
     return FutureBuilder<Map<String, dynamic>>(
-          future: loadPreferences(),
-          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return  SafeArea(
-                child: Scaffold(
-                    backgroundColor: Colors.white,
-                  body:  Center(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.36,
-                      width: MediaQuery.of(context).size.width * 0.74,
-                      child: RiveAnimation.asset(
-                        'assets/riv/logo.riv',
-                        fit: BoxFit.cover,
-                      ),
+      future: loadPreferences(),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+
+            if (snapshot.connectionState == ConnectionState.waiting && _showLoadingIndicator) {
+       
+          return SafeArea(
+            child: Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.36,
+                    width: MediaQuery.of(context).size.width * 0.74,
+                    child: RiveAnimation.asset(
+                      'assets/riv/logo.riv',
+                      fit: BoxFit.cover,
                     ),
-                  )
-                ),
-              );
-            }
-            if (snapshot.hasData) {
-              String auth = snapshot.data!['auth'];
-              int userID = snapshot.data!['user_id'];
-              bool success = snapshot.data!['success'];
+                  ),
+                )),
+            );
+        }
+        if (snapshot.hasData) {
+          String auth = snapshot.data!['auth'];
+          int userID = snapshot.data!['user_id'];
+          bool success = snapshot.data!['success'];
 
-              if (success == true) {
-                if (auth.isNotEmpty && userID != 0) {
-                  ApiService.auth = auth;
-                  ApiService.userID = userID.toString();
-                  return const MainPage();
-                } else {
-                  return const LoginPage();
-                }
-              } else {
-                if (auth.isNotEmpty) {
-                  TimeSheetPreference.logout();
-                }
-                return const LoginPage();
-              }
+          if (success == true) {
+            if (auth.isNotEmpty && userID != 0) {
+              ApiService.auth = auth;
+              ApiService.userID = userID.toString();
+              return const MainPage();
             } else {
-              return SafeArea(
-                child: Scaffold(
-                  backgroundColor: Colors.white,
-                    body:  Center(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.36,
-                        width: MediaQuery.of(context).size.width * 0.74,
-                        child: RiveAnimation.asset(
-                          'assets/riv/logo.riv',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
-                ),
-              );
+              return const LoginPage();
             }
-          },
-        );
+          } else {
+            if (auth.isNotEmpty) {
+              TimeSheetPreference.logout();
+            }
+            return const LoginPage();
+          }
+        } else {
+          return SafeArea(
+            child: Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.36,
+                    width: MediaQuery.of(context).size.width * 0.74,
+                    child: RiveAnimation.asset(
+                      'assets/riv/logo.riv',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )),
+          );
+        }
+      },
+    );
   }
-
 
 
   Future<bool> checkSession(String auth) async {
@@ -167,9 +167,6 @@ class MyApp extends StatelessWidget {
   }
 
   Future<Map<String, dynamic>> loadPreferences() async {
-
-
-    _initializeFlutterFire();
     String auth = await TimeSheetPreference.getAuth();
     int userID = await TimeSheetPreference.getUserID();
 
