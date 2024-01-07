@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class TitleModel {
   String? jsonrpc;
   Result? result;
@@ -52,8 +54,9 @@ class Result {
 class TitleM {
   int? id;
   String? name;
-
-  TitleM({this.id, this.name});
+  String? key;
+  Color? color;
+  TitleM({this.id, this.name, this.key,this.color});
 
   TitleM.fromJson(Map<String, dynamic> json) {
     id = json['id'];

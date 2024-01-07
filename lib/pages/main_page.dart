@@ -38,6 +38,7 @@ class _MainPageState extends State<MainPage> {
         context,
         [
           PopupMenuButton<String>(
+            iconColor: Colors.white,
             onSelected: (value) {
               handleClick(value);
             },
@@ -84,13 +85,16 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBarWidget.mainAppBarSharedWidget(),
+        resizeToAvoidBottomInset: false,
         body: Container(
           alignment: Alignment.center,
           child: widgetOptions.elementAt(selectedIndex),
         ),
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: keyboardIsOpened ||selectedIndex == 2||selectedIndex == 3?
         SizedBox() : FloatingActionButton (
+
           backgroundColor: theme.primaryColorLight,
           onPressed: () {
             setState(() {
@@ -107,11 +111,10 @@ class _MainPageState extends State<MainPage> {
         ),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
+          height: MediaQuery.of(context).size.height*0.07,
           //color of the BottomAppBar
           color: Colors.white,
-          child: Container(
-            margin: const EdgeInsets.only(left: 12.0, right: 12.0),
-            child: Row(
+          child:  Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -119,7 +122,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     updateTabSelection(4, "Profile");
                   },
-                  iconSize: 27.0,
+                  iconSize: 23.0,
                   icon: Icon(
                     Icons.person,
                     color: selectedIndex == 4
@@ -131,7 +134,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     updateTabSelection(3, "Leave");
                   },
-                  iconSize: 27.0,
+                  iconSize: 23.0,
                   icon: Icon(
                     Icons.perm_device_info,
                     color: selectedIndex == 3
@@ -143,7 +146,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     updateTabSelection(2, "Add task");
                   },
-                  iconSize: 27.0,
+                  iconSize: 23.0,
                   icon: Icon(
                     Icons.add_circle,
                     color: selectedIndex == 2
@@ -157,7 +160,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     updateTabSelection(1, "TimeSheet");
                   },
-                  iconSize: 27.0,
+                  iconSize: 23.0,
                   icon: Icon(
                     Icons.view_timeline_sharp,
                     color: selectedIndex == 1
@@ -169,7 +172,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     updateTabSelection(0, "Home");
                   },
-                  iconSize: 27.0,
+                  iconSize: 23.0,
                   icon: Icon(
                     Icons.home,
                     color: selectedIndex == 0
@@ -179,7 +182,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-          ),
+
         ));
   }
 

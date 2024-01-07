@@ -98,10 +98,8 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Divider(),
-                ),
+                Divider(color:Colors.grey[100]),
+
                 Padding(
                     padding: const EdgeInsets.only(
                         top: 15, left: 15, right: 15, bottom: 70),
@@ -228,10 +226,9 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.2,
                         width: MediaQuery.of(context).size.width * 0.5,
-                        child: RiveAnimation.asset(
+                        child:RiveAnimation.asset(
                           'assets/riv/empty_task.riv',
                           fit: BoxFit.cover,
-                          ///Users/farah/Documents/Flutter_project/SDK/flutter/bin/cache/dart-sdk
                         ),
                       ),
                     ),

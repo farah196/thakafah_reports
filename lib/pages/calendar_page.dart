@@ -111,7 +111,7 @@ class _CalendarPageState extends State<CalendarPage> {
           // },
         ),
         const SizedBox(height: 8.0),
-        const Divider(),
+         Divider(color: Colors.grey[100],),
         Expanded(flex: 3, child: activityOnThisDay(theme, model)),
       ],
     );
@@ -190,7 +190,8 @@ class _CalendarPageState extends State<CalendarPage> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.2,
             width: MediaQuery.of(context).size.width * 0.5,
-            child: RiveAnimation.asset(
+            child:
+            RiveAnimation.asset(
               'assets/riv/empty_task.riv',
               fit: BoxFit.cover,
             ),

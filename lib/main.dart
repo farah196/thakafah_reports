@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +20,6 @@ import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
-const _kTestingCrashlytics = true;
-const _kShouldTestAsyncErrorOnInit = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _triggerDelay() {
-    Future.delayed(Duration(seconds: 80), () {
+    Future.delayed(Duration(minutes: 2), () {
       // Set the flag to show the loading indicator with a delay
       if (mounted) {
         setState(() {
@@ -112,7 +109,7 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 )),
-            );
+          );
         }
         if (snapshot.hasData) {
           String auth = snapshot.data!['auth'];
@@ -134,6 +131,7 @@ class _MyAppState extends State<MyApp> {
             return const LoginPage();
           }
         } else {
+
           return SafeArea(
             child: Scaffold(
                 backgroundColor: Colors.white,
@@ -141,9 +139,9 @@ class _MyAppState extends State<MyApp> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.36,
                     width: MediaQuery.of(context).size.width * 0.74,
-                    child: RiveAnimation.asset(
-                      'assets/riv/logo.riv',
-                      fit: BoxFit.cover,
+                    child: RiveAnimation.network(
+                      'https://timesheet.thakafah.com/tahkafah_working_report/static/img/logo.riv',
+                      // fit: BoxFit.cover,
                     ),
                   ),
                 )),
@@ -173,7 +171,7 @@ class _MyAppState extends State<MyApp> {
     // bool onBoardingShow = await SchoolSharedPreference.getIfOnBoardingShow();
     // DateTime? expireSession = await SchoolSharedPreference.getExpireSession() ;
     var success = await checkSession(auth);
-
+    await Future.delayed(Duration(seconds: 3));
     return {
       'auth': auth,
       'user_id': userID,

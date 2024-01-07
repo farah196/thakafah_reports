@@ -1,4 +1,6 @@
 import 'package:http/http.dart' as http;
+import 'package:thakafah_reports/core/model/leave_model.dart';
+import 'package:thakafah_reports/core/model/leaves_type.dart';
 import 'package:thakafah_reports/core/model/report_details.dart';
 import 'package:thakafah_reports/core/model/task_model.dart';
 import 'package:thakafah_reports/core/model/update_task_model.dart';
@@ -76,10 +78,10 @@ class ApiService {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
         "params": {
-          "user_id":  int.parse(userID),
+          "user_id": int.parse(userID),
           "year": year,
           "month": month,
-          "day":day
+          "day": day
         }
       };
       var response = await http.post(
@@ -118,7 +120,7 @@ class ApiService {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
         "params": {
-          "user_id":  int.parse(userID),
+          "user_id": int.parse(userID),
           "title_id": titleID,
           "desc": desc,
           "date": date,
@@ -136,13 +138,13 @@ class ApiService {
     }
   }
 
-  Future<UpdateResult> editTask(
-      int taskID,  int titleID, String desc, String date, double duration) async {
+  Future<UpdateResult> editTask(int taskID, int titleID, String desc,
+      String date, double duration) async {
     try {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
         "params": {
-          "user_id":  int.parse(userID),
+          "user_id": int.parse(userID),
           "task_id": taskID,
           "title_id": titleID,
           "desc": desc,
@@ -184,11 +186,7 @@ class ApiService {
     try {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
-        "params": {
-          "user_id":  int.parse(userID),
-          "year":year,
-          "month":month
-        }
+        "params": {"user_id": int.parse(userID), "year": year, "month": month}
       };
       var response = await http.post(
         Uri.parse('$endpoint/timesheet/report/details'),
@@ -205,11 +203,7 @@ class ApiService {
     try {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
-        "params": {
-          "user_id": int.parse(userID),
-          "year":year,
-          "month":month
-        }
+        "params": {"user_id": int.parse(userID), "year": year, "month": month}
       };
       var response = await http.post(
         Uri.parse('$endpoint/timesheet/report/confirm'),
@@ -221,7 +215,9 @@ class ApiService {
       return UpdateResult();
     }
   }
-  Future<UpdateResult> requestDayOff(String date,String dayOffType,String dayOffNote,int dayNumber) async {
+
+  Future<UpdateResult> requestDayOff(
+      String date, String dayOffType, String dayOffNote, int dayNumber) async {
     try {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
@@ -229,8 +225,8 @@ class ApiService {
           "date": date,
           "user_id": int.parse(userID),
           "day_off_type": dayOffType,
-          "day_off_note":dayOffNote,
-          "days_number":dayNumber
+          "day_off_note": dayOffNote,
+          "days_number": dayNumber
         }
       };
       var response = await http.post(
@@ -243,14 +239,16 @@ class ApiService {
       return UpdateResult();
     }
   }
-  Future<UpdateResult> requestLeave(String date,String note,double duration) async {
+
+  Future<UpdateResult> requestLeave(
+      String date, String note, double duration) async {
     try {
       Map<String, dynamic> data = {
         "jsonrpc": "2.0",
         "params": {
           "user_id": int.parse(userID),
-          "date":date,
-          "leave_note":note,
+          "date": date,
+          "leave_note": note,
           "leave_duration": duration
         }
       };
@@ -264,6 +262,7 @@ class ApiService {
       return UpdateResult();
     }
   }
+
   Future<Profile> getUserProfile() async {
     try {
       Map<String, dynamic> data = {
@@ -280,6 +279,93 @@ class ApiService {
       return Profile.fromJson(json.decode(response.body));
     } catch (e) {
       return Profile();
+    }
+  }
+
+  Future<UpdateResult> deleteLeave(int requestID) async {
+    try {
+      Map<String, dynamic> data = {
+        "jsonrpc": "2.0",
+        "params": {
+          "user_id": userID,
+          "request_id": requestID,
+        }
+      };
+      var response = await http.post(
+        Uri.parse('$endpoint/timesheet/request/delete'),
+        headers: ApiService.headers(auth),
+        body: jsonEncode(data),
+      );
+      return UpdateResult.fromJson(json.decode(response.body));
+    } catch (e) {
+      return UpdateResult();
+    }
+  }
+
+  Future<LeaveType> getLeaveTypes() async {
+    try {
+      Map<String, dynamic> data = {"jsonrpc": "2.0", "params": {}};
+      var response = await http.post(
+        Uri.parse('$endpoint/leave/type/valid'),
+        headers: ApiService.headers(auth),
+        body: jsonEncode(data),
+      );
+      var a = LeaveType.fromJson(json.decode(response.body));
+      return LeaveType.fromJson(json.decode(response.body));
+    } catch (e) {
+      return LeaveType();
+    }
+  }
+
+  Future<UpdateResult> createLeave(int leaveType, String dateFrom, String dateTo,
+      String hourFrom, String hourTo, String description) async {
+    try {
+      Map<String, dynamic> data = {
+        "jsonrpc": "2.0",
+        "params": {
+          "user_id": int.parse(userID),
+          "leave_type_id": leaveType,
+          "request_date_from": dateFrom,
+          "request_date_to": dateTo,
+          "request_hour_from": hourFrom,
+          "request_hour_to": hourTo,
+          "name": description
+        }
+      };
+      var response = await http.post(
+        Uri.parse('$endpoint/leave/leave/create'),
+        headers: ApiService.headers(auth),
+        body: jsonEncode(data),
+      );
+      var a = UpdateResult.fromJson(json.decode(response.body));
+      return UpdateResult.fromJson(json.decode(response.body));
+    } catch (e) {
+      return UpdateResult();
+    }
+  }
+
+  Future<LeaveModel> getLeave(
+      String dateFrom, String dateTo, String state, int type,bool selectDate) async {
+    try {
+      Map<String, dynamic> data = {
+        "jsonrpc": "2.0",
+        "params": {
+          "user_id": int.parse(userID), // or false
+          "date_from": selectDate==true ? dateFrom : false,
+          "date_to":   selectDate==true ? dateTo : false,
+          "state": state, // "confirm" or "refuse" or "validate1" or "validate"
+          "type_id": type == 0 ? false : type // or false
+        }
+      };
+      var response = await http.post(
+        Uri.parse('$endpoint/leave/leave/get'),
+        headers: ApiService.headers(auth),
+        body: jsonEncode(data),
+      );
+      var a = LeaveModel.fromJson(json.decode(response.body));
+      return LeaveModel.fromJson(json.decode(response.body));
+    } catch (e) {
+      return LeaveModel();
     }
   }
 }

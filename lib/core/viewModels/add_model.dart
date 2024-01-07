@@ -14,7 +14,7 @@ class AddModel extends BaseModel {
   List<TitleM> titles = [];
 
   TitleM selectedTitle = TitleM();
-  late var selectedTitleID;
+  int selectedTitleID = 0;
 
   late var formattedDate;
   late double duration;
@@ -40,8 +40,11 @@ class AddModel extends BaseModel {
             }
           }
         } else {
-          selectedTitle = titles.first;
-          selectedTitleID = titles.first.id!;
+          if(titles.isNotEmpty){
+            selectedTitle = titles.first;
+            selectedTitleID = titles.first.id!;
+          }
+
         }
         formattedDate = DateFormat("dd LLLL yyyy", "ar").format(selectedDay);
         print(titles[0].name);

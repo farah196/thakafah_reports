@@ -24,24 +24,60 @@ class UpdateResult {
     return data;
   }
 }
+
+
 class Error {
   int? code;
   String? message;
+  Data? data;
 
-
-  Error({this.code, this.message});
+  Error({this.code, this.message, this.data});
 
   Error.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['code'] = code;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
     return data;
   }
 }
+
+class Data {
+  String? name;
+  String? debug;
+  String? message;
+  List<String>? arguments;
+
+  Data({this.name, this.debug, this.message, this.arguments});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    debug = json['debug'];
+    message = json['message'];
+    arguments = json['arguments'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['debug'] = this.debug;
+    data['message'] = this.message;
+    data['arguments'] = this.arguments;
+
+    return data;
+  }
+}
+
+
+
 class Result {
   bool? success;
   String? message;

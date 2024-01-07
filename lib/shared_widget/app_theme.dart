@@ -81,12 +81,14 @@ class AppTheme {
       primaryColorLight: primaryColorLight,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
       colorScheme: ColorScheme.light(
+        background: Colors.white,
         // change the border color
         primary: primaryColorLight,
         secondary:primaryColorLight,
-        onSecondary: Colors.white,
-        onSurface: accentColor,
+        onSecondary: accentColor,
       ),
+
+
       fontFamily: 'Tajawal',
       textTheme:  const TextTheme(
         displayLarge: headline1,

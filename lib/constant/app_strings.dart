@@ -16,8 +16,8 @@ class Strings
   static const String done = "تم";
   static const String cancel = "إلغاء";
   static const String login_error = "البريد الالكتروني او كلمة السر غير صحيح";
-  static const String reasonLeave = "سبب الإجازة" ;
-  static const String confirmLeave = "تقديم الإجازة";
+  static const String reasonLeave = "# سبب المغادرة" ;
+  static const String confirmLeave = "تأكيد المغادرة";
   static const String addTask = "إضافة المهام";
   static const String taskDesc = "وصف المهمة" ;
   static const String editTask = " تعديل المهام";
@@ -40,8 +40,9 @@ class Strings
   static const String edit = "تعديل";
   static const String leave = "مغادرة";
   static const String dayOff = "إجازة";
-  static const String requestLeaveSubject =  "طلب إجازة / مغادرة";
+  static const String requestLeaveSubject =  "الإجازات / المغادرات";
   static const String dateOfDayOff = "# تاريخ بدء الإجازة";
+  static const String endDateOfDayOff = "# تاريخ إنتهاء الإجازة";
   static const String typeOfDayOff =  "# حدد نوع الإجازة";
   static const String numOfDayOff =  "# حدد عدد الأيام";
   static const String reasonOfDayOff =  "# سبب الإجازة";
@@ -76,6 +77,9 @@ class Strings
   static const String allNotificationsDeleted =  "تم حذف جميع الاشعارات" ;
   static const String notificationTitle =  "هل تود تفعيل الإشعارات" ;
   static const String setNotifications = "تفعيل الإشعارات";
+  static const String startLeave = "بدء المغادرة";
+  static const String endLeave = "إنتهاء المغادرة";
   static const String areYouSure = "هل أنت متأكد ؟";
   static const String exitApp = "تريد الخروج من النطبيق ";
+  static const String endDateError = "لايمكنك تحديد تاريخ انتهاء الإجازة قبل تاريخ بدئها";
 }

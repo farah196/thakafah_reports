@@ -1,5 +1,4 @@
 import 'package:duration_picker/duration_picker.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -55,7 +54,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
         });
       }
     });
-
     super.initState();
   }
 
@@ -103,8 +101,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-
-
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
@@ -177,9 +173,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ],
                 ),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(right: 20, left: 20),
-                child: Divider(),
+                child: Divider(color:Colors.grey[100]),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -367,7 +363,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     primary: theme
                                         .primaryColorLight, // Background color of the button
                                   ),
-                                  child: Icon(Icons.hourglass_bottom)),
+                                  child: Icon(Icons.hourglass_bottom,color: Colors.white,)),
                               content: Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
@@ -433,10 +429,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 20, left: 20),
-                child: Divider(),
-              ),
+
             ],
           ),
         ));
